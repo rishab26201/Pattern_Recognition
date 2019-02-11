@@ -16,21 +16,30 @@ phiy = Y;
 phiy = [phiy ; exp((-(Y-0.5).^2)/0.1)];
 phiy = [phiy ; exp((-(Y+0.5).^2)/0.1)];
 
-lr = 1
+lr = 0.1
 
+sse_ep = [];
 for k = 1:10
 	error = 0
 	sse = 0
 	for i =1:length(X_t)
 		error = t(i)-transpose(w)*phix(:,i);
-		disp(error);
+		%disp(error);
 		w = w + lr*error*phix(:,i);
 	end
 
 	for j = 1:length(Y)
 		sse = sse + (t(j)-transpose(w)*phiy(:,j))^2;
 	end
+	sse_ep = [sse_ep, sse];
 end
+
+hold on
+figure(1)
+plot([1,2,3,4,5,6,7,8,9,10], sse_ep);
+title('epoch vs SSE with lr = 0.1');
+grid
+hold off
 
 disp("ERROR=");
 disp(error);
